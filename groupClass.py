@@ -49,8 +49,8 @@ class group:
         self.identityCheck()
         self.calculateInverses()
 
-    def get_inverses(self):
-        return self._inverses
+    def get_inverse(self,element):
+        return self._inverses[element]
     
     def get_identity(self):
         return self._identity
@@ -60,25 +60,43 @@ class group:
     is a subgroup of this group. 
     """
     def is_subgroup(self, itemlist):
+        result = True
+        for i in itemlist:
+            for j in itemlist:
+                if not self._f(i, self._inverses[j]) in itemlist:
+                    result = False
+                    break
+
+        return result
+                
+
+    def is_cyclic(self):
+        pass
+
+    def is_commutative(self):
         pass
 
 
 
+def are_isomorphic(g1, g2):
+    pass
 
 
-l = [0,1,2,3,4]
-l2 = [0]
+l = [1,2,3,4]
+l2 = [1, 4]
+l3 = [1, 2, 3, 4]
+
 def f_mod_5(a, b):
-    return (a + b) % 5
+    return (a * b) % 5
 
 def f_add(a, b):
     return a + b
 
-g = group(l2, f_mod_5)
+g = group(l, f_mod_5)
 
 print(g.get_identity())
-print(g.get_inverses())
 print(g.is_subgroup(l2))
+print(g.is_subgroup(l3))
 
         
             
