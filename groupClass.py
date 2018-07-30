@@ -8,7 +8,10 @@ checks
 2) that the group has an identity element
 3) that every element of the group has an inverse.
 """
+
+
 class group:
+
 
     def identityCheck(self):
         for a in self._elements:
@@ -69,16 +72,45 @@ class group:
 
         return result
                 
-
+'''
     def is_cyclic(self):
-        pass
+        checkList = []
+        for i in self._elements:
+            listCopy = checkList.copy()
+            listCopy.append(i)
+            elementCopy = self._f(i,i)
+            if elementCopy in self._elements:
+                listCopy.append(elementCopy)
+            elementCopy = self._f(elementCopy, i)
+            if checkList.sort() == self._elements.sort():
+                return True
+            if elementCopy == i:
+                continue
+        return False
+'''
+    def generate(self, element):
+        generatedGroup = []
+        generator = self._f(element, element)
+        generatedGroup.append(generator)
+
+        while generator != element:
+            generator = self._f(generator, element)
+            generatedGroup.append(generator)
+
+        return generatedGroup
+
+    def is_cyclic_2(self):
+        for i in self._elements:
+            if len(self.generate(i)) == len(self._elements):
+                return True
+        return False
 
     def is_commutative(self):
         pass
 
 
 
-def are_isomorphic(g1, g2):
+def are_isomorphic(g1, g2, f):
     pass
 
 
@@ -93,11 +125,13 @@ def f_add(a, b):
     return a + b
 
 g = group(l, f_mod_5)
+print (g.is_cyclic_2())
 
+'''
 print(g.get_identity())
 print(g.is_subgroup(l2))
 print(g.is_subgroup(l3))
-
+'''
         
             
         
