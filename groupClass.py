@@ -72,22 +72,6 @@ class group:
 
         return result
                 
-'''
-    def is_cyclic(self):
-        checkList = []
-        for i in self._elements:
-            listCopy = checkList.copy()
-            listCopy.append(i)
-            elementCopy = self._f(i,i)
-            if elementCopy in self._elements:
-                listCopy.append(elementCopy)
-            elementCopy = self._f(elementCopy, i)
-            if checkList.sort() == self._elements.sort():
-                return True
-            if elementCopy == i:
-                continue
-        return False
-'''
     def generate(self, element):
         generatedGroup = []
         generator = self._f(element, element)
@@ -111,21 +95,39 @@ class group:
 
 
 def are_isomorphic(g1, g2, f):
-    pass
+    if len(g1._elements) != len(g2._elements):
+        return False
 
+    checklist = []
+    for i in g1._elements:
+        if f(i) in checklist:
+            return False
+        checklist.append(f(i))
+
+    for i in g1._elements:
+        for j in g1._elements:
+            if f(g1._f(i, j)) != g2._f(f(i), f(j)):
+                return False
+    return True
+    
 
 l = [1,2,3,4]
-l2 = [1, 4]
-l3 = [1, 2, 3, 4]
+l2 = [0,5]
+l3 = [0,1]
 
-def f_mod_5(a, b):
-    return (a * b) % 5
+def f_mod_2(a, b):
+    return (a + b) % 2
 
-def f_add(a, b):
-    return a + b
+def f_mod_10(a, b):
+    return (a + b) % 10  
 
-g = group(l, f_mod_5)
-print (g.is_cyclic_2())
+def multiply5(a):
+    return a*5
+
+g1 = group(l2, f_mod_10)
+g2 = group(l3, f_mod_2)
+print (are_isomorphic(g2,g1,multiply5))
+
 
 '''
 print(g.get_identity())
